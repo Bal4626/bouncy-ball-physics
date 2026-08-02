@@ -16,7 +16,7 @@ int main() {
     Vector2 position = {500.0f, 500.0f};
     // initialise the velocity for both the 2 dimensions
     // take note that Vector 2 is defined by 2 public float variables x and y
-    Vector2 velocity = {10.0f, 10.0f};
+    Vector2 velocity = {400.0f, 300.0f};
     float radius = 50.0f;
     float timer = 0.0f;
 
@@ -30,6 +30,23 @@ int main() {
         // update the positon
         position.x += GetFrameTime()*velocity.x; 
         position.y += GetFrameTime()*velocity.y;
+
+        // what happens if it hits the right side 
+        if (position.x + radius >= GetScreenWidth()){
+            velocity.x = velocity.x *-1;
+        }
+        // left side
+        if (position.x - radius <= 0){
+            velocity.x = velocity.x *-1;
+        }
+        // top side
+        if (position.y - radius <= 0){
+            velocity.y = velocity.y *-1;
+        }
+        // bottom side
+        if (position.y + radius >= GetScreenHeight()){
+            velocity.y = velocity.y *-1;
+        }
         
         // for changing the background colour
         timer += GetFrameTime();
