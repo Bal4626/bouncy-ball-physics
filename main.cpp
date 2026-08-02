@@ -3,10 +3,13 @@
 #include <raylib.h>
 
 int main() {
+    // make sure the width and the height can be adjustable
     int width = 1000;
     int height = 1000;
 
-    //close the window
+    // this is what makes it expand with the minimize maximise icon 
+    SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+
     InitWindow(width, height, "Bouncy Ball Simulation"); 
 
     // start the position of the circle 
@@ -19,7 +22,9 @@ int main() {
 
     //while the window is closed
     while (!WindowShouldClose()){
+
         BeginDrawing();
+          
         // draw the text from the top of the screen
         DrawText(TextFormat("Let's Simulate!\nTime elapsed %.2f",GetTime()), 0, 0, 30, LIME);
         // update the positon
@@ -30,9 +35,10 @@ int main() {
         timer += GetFrameTime();
         if ((int)timer % 2 == 0){
             ClearBackground(BLACK);
+
         } else{
             //this is what changes the background
-            ClearBackground(PURPLE);
+            ClearBackground(DARKBLUE);
         }
         DrawCircleV(position, radius, RAYWHITE);
         EndDrawing();
