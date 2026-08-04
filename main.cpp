@@ -22,10 +22,10 @@ int main() {
     Vector2 position = INITIAL_POSITION;
     Vector2 velocity = INITIAL_VELOCITY;
     
-    const float radius = 50.0f;
     float timer = 0.0f;
     const float PIXELS_PER_METER = 100.0f;
     const float gravity = 9.81f * PIXELS_PER_METER;
+    const float radius = 50.0f;
     
     // are you holding the ball
     bool isDragging = false;
@@ -33,29 +33,37 @@ int main() {
     //while the window is closed
     while (!WindowShouldClose()){
         Vector2 getMousePosition = GetMousePosition();
-
+        
         // add the spacebar that brings ball to the original state
         if (IsKeyPressed(KEY_SPACE)){
             position = INITIAL_POSITION;
             velocity = INITIAL_VELOCITY;
         }
-
+        
         if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
             // hold the ball when you click on it
             if (CheckCollisionPointCircle(getMousePosition, position, radius)) {
                 isDragging = true;
             }
         }
-        if(isDragging){
-            velocity = {0.0f,0.0f};
-            position = getMousePosition;
-        } 
-
+        
         if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT)){
+            if (isDragging){
+                
+                Vector2 getMouseDelta = GetMouseDelta();
+                // guard by divide by 0 errors
+                if (GetFrameTime() > 0.0f){
+                    velocity.x = getMouseDelta.x / GetFrameTime();
+                    velocity.y = getMouseDelta.y / GetFrameTime();
+                }
+            }
             isDragging = false;
         }
-        
-        if (!isDragging){ 
+
+        if (isDragging){
+            velocity = {0.0f,0.0f};
+            position = getMousePosition;
+        } else{ 
             // update the velocity for the gravity
             velocity.y += gravity * GetFrameTime();
     
@@ -91,7 +99,6 @@ int main() {
             }
         }
 
-
         BeginDrawing();
           
         // draw the text from the top of the screen
@@ -99,7 +106,12 @@ int main() {
 
         // for changing the background colour
         ClearBackground(BLACK);
-        DrawCircleV(position, radius, RAYWHITE);
+
+        Color ballcolor = RAYWHITE;
+        if(isDragging){
+            ballcolor = RED;
+        }
+        DrawCircleV(position, radius, ballcolor);
         
         EndDrawing();
     }
