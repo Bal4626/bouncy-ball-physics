@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <raylib.h>
 
-#include "../include/Ball.h"
+#include "Ball.h"
 
 int main() {
     // make sure the width and the height can be adjustable

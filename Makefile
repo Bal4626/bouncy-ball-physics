@@ -1,6 +1,7 @@
 CXX = g++
-CXXFLAGS = -Wall -std=c++11
-LIBS = -Iinclude -Wall -std=c++11 -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+CXXFLAGS = -Iinclude -Wall -std=c++11
+#LIBS2 = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+LIBS = $(shell pkg-config --libs raylib)
 
 TARGET = build/main
 SRC = src/main.cpp src/Ball.cpp
