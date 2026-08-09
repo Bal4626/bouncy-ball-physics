@@ -1,9 +1,9 @@
 CXX = g++
 CXXFLAGS = -Wall -std=c++11
-LIBS = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+LIBS = -Iinclude -Wall -std=c++11 -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
-TARGET = main
-SRC = main.cpp
+TARGET = build/main
+SRC = src/main.cpp src/Ball.cpp
 
 all: $(TARGET)
 
