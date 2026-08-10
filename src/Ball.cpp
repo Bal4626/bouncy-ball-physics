@@ -80,7 +80,7 @@ void Ball::Update(){
         }
     }
 }
-void Ball::Draw(int textOffsetY = 0){
+void Ball::Draw(){
     Color ballcolor = color;
     if(isDragging){
         ballcolor = RED;

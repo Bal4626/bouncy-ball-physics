@@ -20,7 +20,7 @@ struct Ball{
 
     //Methods
     void Update();
-    void Draw(int textOffestY);
+    void Draw();
     void Reset();
 };
 #endif
