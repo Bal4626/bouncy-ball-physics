@@ -56,9 +56,9 @@ int main() {
         }
 
         if (IsKeyPressed(KEY_C)){
-            for (auto& ball : balls){
-                balls.clear();
-            }
+            //for (auto& ball : balls){ //dont need to use this since i never use my functions that i created for Ball
+            balls.clear();
+            //}
         }
         
         BeginDrawing();
