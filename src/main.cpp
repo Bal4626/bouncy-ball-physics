@@ -49,7 +49,13 @@ int main() {
         }
 
         // you need to add the spatial hash grid call and the PBD solver step here 
+        /*
+        **Yes, exactly.**
+Once those 4 steps in `SpatialHashGrid.cpp` are complete, your main 
+loop only needs a quick call to update/insert the particles, 
+run the collision query, and draw them before `EndDrawing()`.
 
+        */
 
 
         // you need to add the spatial hash grid call and the PBD solver step here 
