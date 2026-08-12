@@ -13,6 +13,7 @@ struct Ball{
     Vector2 INITIAL_POSITION = {100.0f, 500.0f};
     Vector2 INITIAL_VELOCITY = {200.0f, -200.0f};
     float timer = 0.0f;
+    Vector2 predictedPosition = {0.0f, 0.0f};
 
     // default constructor
     Ball() = default;

@@ -48,6 +48,12 @@ int main() {
             ball.Update();
         }
 
+        // you need to add the spatial hash grid call and the PBD solver step here 
+
+
+
+        // you need to add the spatial hash grid call and the PBD solver step here 
+
         // reset logic for all balls when pressed space key
         if (IsKeyPressed(KEY_SPACE)){
             for (auto& ball : balls){

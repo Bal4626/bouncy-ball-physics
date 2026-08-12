@@ -44,42 +44,37 @@ void Ball::Update(){
     if (isDragging){
         velocity = {0.0f,0.0f};
         position = getMousePosition;
-    } else{ 
-        // update the velocity for the gravity
-        velocity.y += gravity * GetFrameTime();
-        
-        // update the positon
-        position.x += GetFrameTime()*velocity.x; 
-        position.y += GetFrameTime()*velocity.y;
-        
-        // the update phrase should be seperate from the render drawing
-        // what happens if it hits the right side 
-        if (position.x + radius >= GetScreenWidth()){
-            velocity.x = velocity.x *-energyLost;
-            // snapping the position
-            float overshoot = (position.x + radius) - GetScreenWidth();
-            position.x = GetScreenWidth() - radius - overshoot;
+    } else{
+        //update the velocity with gravity
+        velocity.y += gravity * GetFrameTime(); 
+
+        // init and predict the next position
+        predictedPosition.x = position.x + velocity.x * GetFrameTime();
+        predictedPosition.y = position.y + velocity.x * GetFrameTime();
+
+        // what happens if it hits the right side
+        if (predictedPosition.x + radius >= GetScreenWidth()){
+            predictedPosition.x = GetScreenWidth() - radius;
+            velocity.x *= -energyLost; // dampen the velocity
         }
-        // left side
-        if (position.x - radius <= 0){
-            velocity.x = velocity.x *-energyLost;
-            float overshoot = (-position.x + radius);
-            position.x = radius + overshoot;
+        // what happens if it hits the left side
+        if (predictedPosition.x - radius <= 0){
+            predictedPosition.x = radius;
+            velocity.x *= -energyLost; // dampen the velocity
         }
-        // top side
-        if (position.y - radius <= 0){
-            velocity.y = velocity.y *-energyLost;
-            float overshoot = (-position.y + radius);
-            position.y = radius + overshoot;
+        // what happens if it hits the top side
+        if (predictedPosition.y - radius <= 0){
+            predictedPosition.y = radius;
+            velocity.y *= -energyLost; // dampen the velocity
         }
-        // bottom side
-        if (position.y + radius >= GetScreenHeight()){
-            velocity.y *= -energyLost;
-            float overshoot = (position.y + radius) - GetScreenHeight();
-            position.y = GetScreenHeight() - radius - overshoot;
+        // what happens if it hits the bottom side
+        if (predictedPosition.y + radius >= GetScreenHeight()){
+            predictedPosition.y = GetScreenHeight() - radius;
+            velocity.y *= -energyLost; // dampen the velocity
         }
     }
 }
+
 void Ball::Draw(){
     Color ballcolor = color;
     if(isDragging){
