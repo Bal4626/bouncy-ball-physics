@@ -81,15 +81,32 @@ void Ball::Update(){
 // handles the collision of the balls with each other
 void Ball::BallCollision(Ball& a,Ball& b){
     
-    float dx = b.position.x - a.position.y;
+    /*
+    since we did Ball B - Ball A the vector points from A -> B
+    A is at the tail of arrrow and to move away from B it needs 
+    to move in the opposite direction as the arrow field.
+    */ 
+    float dx = b.position.x - a.position.x;
     float dy = b.position.y - a.position.y;
 
     float distance = std::sqrt(dx * dx + dy * dy);
 
+    // the balls are overlapping
     if(distance <= b.radius + a.radius){
+        float overlap = (a.radius + b.radius) - distance;
+        float normalX = dx / distance;
+        float normalY = dy / distance;
+
+        a.position.x -= 0.5f * overlap * normalX;
+        a.position.y -= 0.5f * overlap * normalY;
+
+        b.position.x += 0.5f * overlap * normalX;
+        b.position.y += 0.5f * overlap * normalY;
+
+        float relativeVelocityX = b.velocity.x - a.velocity.x;
+        float relativeVelocityY = b.velocity.y - a.velocity.y;
         
     }
-
 
 }
 
