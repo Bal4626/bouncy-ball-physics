@@ -4,24 +4,37 @@
 #include <vector>
 
 #include "Ball.h"
+#include "SpatialHashGrid.h"
 
 int main() {
     // make sure the width and the height can be adjustable
-    int width = 1000;
-    int height = 1000;
     int numberOfBalls = 0;
     
     // this is what makes it expand with the minimize maximise icon 
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-    InitWindow(width, height, "Bouncy Ball Simulation"); 
+    InitWindow(1000, 1000, "Bouncy Ball Simulation"); 
     SetTargetFPS(60);
-
-    std::vector<Ball> balls;// instead of creating one by one use a vector that holds ball objects
+    
+    int width = GetScreenWidth();
+    int height = GetScreenHeight();
+    
+    // create a instance of SpatialHashGrid
+    SpatialHashGrid spatialGrid;
+    
     // Ball is the Instance in the header file ball is the single object inside the container called balls
-
+    std::vector<Ball> balls;// instead of creating one by one use a vector that holds ball objects
+    
+    
     //while the window is closed
     while (!WindowShouldClose()){
 
+        // we need to update the width and height when we resize
+        if(IsWindowResized()){
+            width = GetScreenWidth();
+            height = GetScreenHeight();
+            spatialGrid.Init(width, height);
+        }
+        
         //when i press the right key another ball needs to appear the the position of the cursor
         if (IsMouseButtonPressed(MOUSE_BUTTON_RIGHT)){
             
@@ -43,22 +56,25 @@ int main() {
                 balls.push_back(Ball(mousePosition, {100.0f, 500.0f}, YELLOW, 50.0f, 0.8f));
             }
         }
-        // update the physics for all balls b4 redndering
-        for (auto& ball : balls){
+
+        for(auto& ball : balls){
             ball.Update();
         }
 
-        // you need to add the spatial hash grid call and the PBD solver step here 
-        /*
-        **Yes, exactly.**
-Once those 4 steps in `SpatialHashGrid.cpp` are complete, your main 
-loop only needs a quick call to update/insert the particles, 
-run the collision query, and draw them before `EndDrawing()`.
+        // First we insert all the balls 
+        spatialGrid.Insert(balls); // since balls is alr a datatype of ball
+        
+        // update then inser teh particales
+        // for all the balls in ball
+        for(auto& ball: balls){
+            // input position vector output a list of int
+            // create a list of integers name neighbour
+            std::vector <int> neighbour = spatialGrid.GetNeighbours(ball.position);
+            for (auto& neighbours : neighbour){
+                //ball.Update(); // thiss does the collision physics
+            }
+        }
 
-        */
-
-
-        // you need to add the spatial hash grid call and the PBD solver step here 
 
         // reset logic for all balls when pressed space key
         if (IsKeyPressed(KEY_SPACE)){

@@ -23,5 +23,8 @@ struct Ball{
     void Update();
     void Draw();
     void Reset();
+    // the & is there so that the compiler does not need to make 
+    // copies
+    void Ball::BallCollision(Ball& a, Ball& b);
 };
 #endif

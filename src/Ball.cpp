@@ -1,4 +1,5 @@
 #include "Ball.h"
+#include <cmath>
 
 // This is the constructor and it must have the exact same name as teh struct
 // and NO return type i.e. (void, int, etc...)
@@ -50,7 +51,7 @@ void Ball::Update(){
 
         // init and predict the next position
         predictedPosition.x = position.x + velocity.x * GetFrameTime();
-        predictedPosition.y = position.y + velocity.x * GetFrameTime();
+        predictedPosition.y = position.y + velocity.y * GetFrameTime();
 
         // what happens if it hits the right side
         if (predictedPosition.x + radius >= GetScreenWidth()){
@@ -72,7 +73,24 @@ void Ball::Update(){
             predictedPosition.y = GetScreenHeight() - radius;
             velocity.y *= -energyLost; // dampen the velocity
         }
+        // you need to do this due to the DrawCircleV
+        position = predictedPosition;
     }
+}
+
+// handles the collision of the balls with each other
+void Ball::BallCollision(Ball& a,Ball& b){
+    
+    float dx = b.position.x - a.position.y;
+    float dy = b.position.y - a.position.y;
+
+    float distance = std::sqrt(dx * dx + dy * dy);
+
+    if(distance <= b.radius + a.radius){
+        
+    }
+
+
 }
 
 void Ball::Draw(){

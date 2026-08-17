@@ -4,7 +4,7 @@ LIBS2 = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 #LIBS = $(shell pkg-config --libs raylib)
 
 TARGET = build/main
-SRC = src/main.cpp src/Ball.cpp
+SRC = src/main.cpp src/Ball.cpp src/SpatialHashGrid.cpp
 
 all: $(TARGET)
 
