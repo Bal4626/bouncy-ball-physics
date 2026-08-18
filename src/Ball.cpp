@@ -62,6 +62,11 @@ void Ball::Update(){
         if (predictedPosition.x - radius <= 0){
             predictedPosition.x = radius;
             velocity.x *= -bounciness; // dampen the velocity
+
+            // stop the jitter when nesting on the floow
+            if (std::abs(velocity.x) < 0.5f){
+                velocity.x = 0.0f;
+            }
         }
         // what happens if it hits the top side
         if (predictedPosition.y - radius <= 0){

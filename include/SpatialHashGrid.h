@@ -12,7 +12,7 @@
 // struct SpatialHashGrid is a datatype that does the O(n) collisions;
 struct SpatialHashGrid{
     // convert coordinate positions to integer cell coordinates
-    float spatialHashGridCellDimension = 15.0f;
+    float spatialHashGridCellDimension = 40.0f;
     int spatialHashGridCols = 0;
     int spatialHashGridRows = 0;
     int spatialHashGridTotalCells = 0;
