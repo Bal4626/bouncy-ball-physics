@@ -42,6 +42,7 @@ void SpatialHashGrid::Insert(const std::vector<Ball>& balls){
     }
 }
 
+
 /*
 GetNeighbours(balls[0].position) => [0,1,3] Hence balls 1 and 3 are neighbours w 0
 */
@@ -49,8 +50,8 @@ std::vector <int> SpatialHashGrid::GetNeighbours(Vector2 position){
     // this is the list that u wanna return
     std::vector <int> neighbours;
 
-    int colX = static_cast<int>(position.x / spatialHashGridCellDimension);
-    int rowY = static_cast<int>(position.y / spatialHashGridCellDimension);
+    int colX = static_cast<int>(std::floor(position.x / spatialHashGridCellDimension));
+    int rowY = static_cast<int>(std::floor(position.y / spatialHashGridCellDimension));
 
     // loop over the termination conditions
     for (int i = colX - 1; i <= colX + 1; ++i){

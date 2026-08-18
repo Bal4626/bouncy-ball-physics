@@ -20,6 +20,7 @@ int main() {
     
     // create a instance of SpatialHashGrid
     SpatialHashGrid spatialGrid;
+    spatialGrid.Init(width,height);
     
     // Ball is the Instance in the header file ball is the single object inside the container called balls
     std::vector<Ball> balls;// instead of creating one by one use a vector that holds ball objects
@@ -44,16 +45,16 @@ int main() {
             if(numberOfBalls % 3 == 0){
                 //init the red balls
                 //Vector2 mousePosition = {(float)GetMouseX(), (float)GetMouseY()};
-                balls.push_back(Ball(mousePosition,{400.0f,500.0f},RED, 50.0f, 0.8f));
+                balls.push_back(Ball(mousePosition,{40.0f,50.0f},RED, 30.0f, 0.8f));
             }
             else if(numberOfBalls % 3 == 1){
                 //init the default white balls
-                balls.push_back(Ball(mousePosition, {200.0f, -200.0f}, RAYWHITE, 50.0f, 0.8f));
+                balls.push_back(Ball(mousePosition, {20.0f, -20.0f}, RAYWHITE, 30.0f, 0.8f));
             }
             else{
                 // init the yellow balls
                 //Vector2 mousePosition = {(float)GetMouseX(), (float)GetMouseY()};
-                balls.push_back(Ball(mousePosition, {100.0f, 500.0f}, YELLOW, 50.0f, 0.8f));
+                balls.push_back(Ball(mousePosition, {10.0f, 50.0f}, YELLOW, 30.0f, 0.8f));
             }
         }
 
@@ -62,24 +63,25 @@ int main() {
             ball.Update();
         }
 
-        // First we insert all the balls and Insert will also clear() automatically
+        // // First we insert all the balls and Insert will also clear() automatically
         spatialGrid.Insert(balls); // since balls is alr a datatype of ball
 
         for (size_t i = 0; i < balls.size(); ++i){
             std::vector <int> neighbours = spatialGrid.GetNeighbours(balls[i].position);
 
-            // for (size_t j : neighbours){
-            //     // do not check with itself
-            //     if(i == j) continue;
+            for (size_t j : neighbours){
+                //do not check with itself
+                if(i == j) continue;
 
-            //     // stop checking the pair twice
-            //     if(i < j){
-            //         Ball::BallCollision(balls[i], balls[j]);
-            //     }
-            // }
-            for (size_t j = i + 1; j < balls.size(); ++j) {
-                Ball::BallCollision(balls[i], balls[j]);
+                // stop checking the pair twice
+                if(i < j){
+                    Ball::BallCollision(balls[i], balls[j]);
+                }
             }
+
+            // for (size_t j = i + 1; j < balls.size(); ++j) {
+            //     Ball::BallCollision(balls[i], balls[j]);
+            // }
         }
 
         // reset logic for all balls when pressed space key
@@ -106,7 +108,6 @@ int main() {
 
         EndDrawing();
     }
-
     CloseWindow();
 
     return 0;

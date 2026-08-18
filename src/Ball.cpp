@@ -114,7 +114,7 @@ void Ball::BallCollision(Ball& a,Ball& b){
         float velocityAlongNormal = relativeVelocityX * normalX +
                                     relativeVelocityY * normalY;
         
-        if (velocityAlongNormal > 0) return;
+        if (velocityAlongNormal > 0.0f) return;
 
         float combinedBounciness =  (a.bounciness + b.bounciness) * 0.5f;
 
@@ -126,9 +126,7 @@ void Ball::BallCollision(Ball& a,Ball& b){
 
         b.velocity.x += impulse * normalX;
         b.velocity.y += impulse * normalY;
-        
     }
-
 }
 
 void Ball::Draw(){
