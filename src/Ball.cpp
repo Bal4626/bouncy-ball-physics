@@ -3,12 +3,12 @@
 
 // This is the constructor and it must have the exact same name as teh struct
 // and NO return type i.e. (void, int, etc...)
-Ball::Ball(Vector2 ballPosition, Vector2 ballVelocity, Color ballColor, float ballRadius, float ballEnergyLost){
+Ball::Ball(Vector2 ballPosition, Vector2 ballVelocity, Color ballColor, float ballRadius, float ballBounciness){
     position = ballPosition;
     velocity = ballVelocity;
     color = ballColor;
     radius = ballRadius; //cannot put float radius = radius due to variable shadowing
-    energyLost = ballEnergyLost;
+    bounciness = ballBounciness;
     INITIAL_POSITION = ballPosition;
     INITIAL_VELOCITY = ballVelocity;
     // isDragging would automatically default to false
@@ -56,22 +56,27 @@ void Ball::Update(){
         // what happens if it hits the right side
         if (predictedPosition.x + radius >= GetScreenWidth()){
             predictedPosition.x = GetScreenWidth() - radius;
-            velocity.x *= -energyLost; // dampen the velocity
+            velocity.x *= -bounciness; // dampen the velocity
         }
         // what happens if it hits the left side
         if (predictedPosition.x - radius <= 0){
             predictedPosition.x = radius;
-            velocity.x *= -energyLost; // dampen the velocity
+            velocity.x *= -bounciness; // dampen the velocity
         }
         // what happens if it hits the top side
         if (predictedPosition.y - radius <= 0){
             predictedPosition.y = radius;
-            velocity.y *= -energyLost; // dampen the velocity
+            velocity.y *= -bounciness; // dampen the velocity
         }
         // what happens if it hits the bottom side
         if (predictedPosition.y + radius >= GetScreenHeight()){
             predictedPosition.y = GetScreenHeight() - radius;
-            velocity.y *= -energyLost; // dampen the velocity
+            velocity.y *= -bounciness; // dampen the velocity
+
+            // stop the jitter when nesting on the floow
+            if (std::abs(velocity.y) < 0.5f){
+                velocity.y = 0.0f;
+            }
         }
         // you need to do this due to the DrawCircleV
         position = predictedPosition;
@@ -105,6 +110,22 @@ void Ball::BallCollision(Ball& a,Ball& b){
 
         float relativeVelocityX = b.velocity.x - a.velocity.x;
         float relativeVelocityY = b.velocity.y - a.velocity.y;
+
+        float velocityAlongNormal = relativeVelocityX * normalX +
+                                    relativeVelocityY * normalY;
+        
+        if (velocityAlongNormal > 0) return;
+
+        float combinedBounciness =  (a.bounciness + b.bounciness) * 0.5f;
+
+        float impulse = -(1.0f + combinedBounciness) *
+                        velocityAlongNormal * 0.5f;
+
+        a.velocity.x -= impulse * normalX;
+        a.velocity.y -= impulse * normalY;
+
+        b.velocity.x += impulse * normalX;
+        b.velocity.y += impulse * normalY;
         
     }
 

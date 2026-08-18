@@ -57,24 +57,27 @@ int main() {
             }
         }
 
+        // loop thru the balls and update (i.e. move the balls)
         for(auto& ball : balls){
             ball.Update();
         }
 
-        // First we insert all the balls 
+        // First we insert all the balls and Insert will also clear() automatically
         spatialGrid.Insert(balls); // since balls is alr a datatype of ball
-        
-        // update then inser teh particales
-        // for all the balls in ball
-        for(auto& ball: balls){
-            // input position vector output a list of int
-            // create a list of integers name neighbour
-            std::vector <int> neighbour = spatialGrid.GetNeighbours(ball.position);
-            for (auto& neighbours : neighbour){
-                //ball.Update(); // thiss does the collision physics
+
+        for (size_t i = 0; i < balls.size(); ++i){
+            std::vector <int> neighbours = spatialGrid.GetNeighbours(balls[i].position);
+
+            for (size_t j : neighbours){
+                // do not check with itself
+                if(i == j) continue;
+
+                // stop checking the pair twice
+                if(i < j){
+                    Ball::BallCollision(balls[i], balls[j]);
+                }
             }
         }
-
 
         // reset logic for all balls when pressed space key
         if (IsKeyPressed(KEY_SPACE)){
@@ -102,5 +105,6 @@ int main() {
     }
 
     CloseWindow();
+
     return 0;
 }

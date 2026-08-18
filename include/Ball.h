@@ -9,7 +9,7 @@ struct Ball{
     Color color = RAYWHITE;
     float radius = 50.0f; 
     bool isDragging = false;
-    float energyLost = 0.9f;
+    float bounciness = 0.9f;
     Vector2 INITIAL_POSITION = {100.0f, 500.0f};
     Vector2 INITIAL_VELOCITY = {200.0f, -200.0f};
     float timer = 0.0f;
@@ -25,6 +25,6 @@ struct Ball{
     void Reset();
     // the & is there so that the compiler does not need to make 
     // copies
-    void Ball::BallCollision(Ball& a, Ball& b);
+    static void BallCollision(Ball& a, Ball& b);
 };
 #endif
