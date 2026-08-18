@@ -68,14 +68,17 @@ int main() {
         for (size_t i = 0; i < balls.size(); ++i){
             std::vector <int> neighbours = spatialGrid.GetNeighbours(balls[i].position);
 
-            for (size_t j : neighbours){
-                // do not check with itself
-                if(i == j) continue;
+            // for (size_t j : neighbours){
+            //     // do not check with itself
+            //     if(i == j) continue;
 
-                // stop checking the pair twice
-                if(i < j){
-                    Ball::BallCollision(balls[i], balls[j]);
-                }
+            //     // stop checking the pair twice
+            //     if(i < j){
+            //         Ball::BallCollision(balls[i], balls[j]);
+            //     }
+            // }
+            for (size_t j = i + 1; j < balls.size(); ++j) {
+                Ball::BallCollision(balls[i], balls[j]);
             }
         }
 
